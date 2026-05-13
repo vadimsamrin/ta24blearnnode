@@ -8,7 +8,7 @@ import ChuckNorris from './pages/ChuckNorris.vue';
 import RickAndMorty from './pages/RickAndMorty.vue';
 import CanvasExample from './pages/CanvasExample.vue';
 import WebApis from './pages/WebApis.vue';
-import FullscreenDemo from './pages/FullscreenDemo.vue';
+import ResizeObserverDemo from './pages/ResizeObserverDemo.vue';
 
 const routes = [
   { path: '/', component: ToDo, name: 'ToDo' },
@@ -18,7 +18,7 @@ const routes = [
   { path: '/rickandmorty', component: RickAndMorty, name: 'Rick And Morty' },
   { path: '/canvas', component: CanvasExample, name: 'Canvas' },
   { path: '/webapis', component: WebApis, name: 'WebApis' },
-  { path: '/fullscreen', component: FullscreenDemo, name: 'Fullscreen API Demo' },
+{ path: '/resize-observer', component: ResizeObserverDemo, name: 'Resize Observer API Demo' },
 ];
 
 export const router = createRouter({
