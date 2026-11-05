@@ -9,6 +9,7 @@ import RickAndMorty from './pages/RickAndMorty.vue';
 import CanvasExample from './pages/CanvasExample.vue';
 import WebApis from './pages/WebApis.vue';
 import ResizeObserverDemo from './pages/ResizeObserverDemo.vue';
+import IntersectionObserverDemo from './pages/IntersectionObserverDemo.vue';
 
 const routes = [
   { path: '/', component: ToDo, name: 'ToDo' },
@@ -18,11 +19,12 @@ const routes = [
   { path: '/rickandmorty', component: RickAndMorty, name: 'Rick And Morty' },
   { path: '/canvas', component: CanvasExample, name: 'Canvas' },
   { path: '/webapis', component: WebApis, name: 'WebApis' },
-{ path: '/resize-observer', component: ResizeObserverDemo, name: 'Resize Observer API Demo' },
+  { path: '/resize-observer', component: ResizeObserverDemo, name: 'Resize Observer API Demo' },
+  { path: '/intersection-observer', component: IntersectionObserverDemo, name: 'Intersection Observer API Demo' },
 ];
 
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes,
 });
 
