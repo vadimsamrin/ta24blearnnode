@@ -1,8 +1,11 @@
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import CharacterCard from '../components/CharacterCard.vue';
+import PaginationBar from '../components/PaginationBar.vue';
 let characters = ref([]);
+let currentPage = ref(1);
+let characterList = ref(null);
 let info = ref({
     count: 0,
     pages: 0,
@@ -10,31 +13,50 @@ let info = ref({
     prev: null,
 });
 
-await getCharacters('https://rickandmortyapi.com/api/character');
+await getCharacters(1);
 
-async function getCharacters(url) {
-    const res = await axios.get(url);
+async function getCharacters(page) {
+    const res = await axios.get('https://rickandmortyapi.com/api/character', {
+        params: { page },
+    });
     characters.value = res.data.results;
     info.value = res.data.info;
+    currentPage.value = page;
 }
 
-async function next() {
-    await getCharacters(info.value.next);
+async function changePage(page) {
+    if (page < 1 || page > info.value.pages || page === currentPage.value) return;
+    await getCharacters(page);
 }
 
-async function prev() {
-    await getCharacters(info.value.prev);
-}
+watch(currentPage, async () => {
+    await nextTick();
+    characterList.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
 </script>
 <template>
-    <div class="is-flex is-justify-content-space-between mb-2">
-        <button class="button is-primary" :disabled="!info.prev" @click="prev">Prev</button>
-        <button class="button is-primary" :disabled="!info.next" @click="next">Next</button>
-    </div>
-    <div class="columns is-multiline">
-        <div class="column is-3" v-for="character in characters">
+    <div ref="characterList" class="character-list">
+        <PaginationBar
+            :current-page="currentPage"
+            :total-pages="info.pages"
+            @page-change="changePage"
+        />
+        <div class="columns is-multiline">
+        <div class="column is-3" v-for="character in characters" :key="character.id">
             <CharacterCard :character="character"></CharacterCard>
         </div>
+        </div>
+        <PaginationBar
+            :current-page="currentPage"
+            :total-pages="info.pages"
+            @page-change="changePage"
+        />
     </div>
 </template>
+
+<style scoped>
+.character-list {
+    scroll-margin-top: 1rem;
+}
+</style>
